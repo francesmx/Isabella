@@ -1,26 +1,49 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image, Text } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import { colourWheel } from '../utils/ColorWheel';
 
-export default function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const animalArray = [
+  require('../../assets/animals/bunny.png'),
+  require('../../assets/animals/tiger.png'),
+  require('../../assets/animals/frog.png'),
+  require('../../assets/animals/pig.png'),
+  require('../../assets/animals/giraffe.png'),
+];
 
-  const cycleArrayIndex = (increment) => {
+export default function Home() {
+  const [colourIndex, setColourIndex] = useState(0);
+  const [animalIndex, setAnimalIndex] = useState(0);
+
+  const cycleColourArrayIndex = (increment) => {
     const nextIndex =
-      (currentIndex + increment + colourWheel.length) % colourWheel.length;
-    setCurrentIndex(nextIndex);
+      (colourIndex + increment + colourWheel.length) % colourWheel.length;
+    setColourIndex(nextIndex);
+  };
+
+  const cycleAnimalArrayIndex = (increment) => {
+    const nextIndex =
+      (animalIndex + increment + animalArray.length) % animalArray.length;
+    setAnimalIndex(nextIndex);
   };
 
   const onGestureEvent = (event) => {
-    const { translationX } = event.nativeEvent;
+    const { translationX, translationY } = event.nativeEvent;
 
     if (translationX > 50) {
       // Right swipe
-      cycleArrayIndex(1);
+      cycleColourArrayIndex(1);
     } else if (translationX < -50) {
       // Left swipe
-      cycleArrayIndex(-1);
+      cycleColourArrayIndex(-1);
+    }
+
+    if (translationY > 20) {
+      // Up swipe
+      cycleAnimalArrayIndex(1);
+    } else if (translationY < -20) {
+      // Down swipe
+      cycleAnimalArrayIndex(-1);
     }
   };
 
@@ -38,9 +61,11 @@ export default function Home() {
       <View
         style={[
           styles.container,
-          { backgroundColor: colourWheel[currentIndex] },
+          { backgroundColor: colourWheel[colourIndex] },
         ]}
-      />
+      >
+        <Image source={animalArray[animalIndex]} />
+      </View>
     </PanGestureHandler>
   );
 }
