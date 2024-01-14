@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,7 @@ import {
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import { colourWheel } from '../utils/ColorWheel';
 import { Audio } from 'expo-av';
-import ShakeImage from '../utils/ShakeImage';
+import AnimatableImage from '../components/AnimatableImage';
 
 const animalArray = [
   require('../../assets/animals/bunny.png'),
@@ -21,13 +21,11 @@ const animalArray = [
 export default function Home() {
   const [colourIndex, setColourIndex] = useState(0);
   const [animalIndex, setAnimalIndex] = useState(0);
-
   const [colourIndexChanged, setColourIndexChanged] = useState(false);
   const [animalIndexChanged, setAnimalIndexChanged] = useState(false);
-
   const [isImageTouched, setIsImageTouched] = useState(false);
-
   const [sound, setSound] = useState();
+  const animatableImageRef = useRef();
 
   async function playSound() {
     console.log('Loading Sound');
@@ -35,7 +33,6 @@ export default function Home() {
       require('../../assets/sounds/boing.mp3')
     );
     setSound(sound);
-
     console.log('Playing Sound');
     await sound.playAsync();
   }
@@ -63,10 +60,29 @@ export default function Home() {
     setAnimalIndexChanged(true);
   };
 
+  const getRandomAnimation = () => {
+    const animations = [
+      // shakeImageRef.current.shake,
+      animatableImageRef.current.rotate,
+      animatableImageRef.current.rotateReverse,
+      animatableImageRef.current.moveLeft,
+      animatableImageRef.current.jumpUp,
+      animatableImageRef.current.zoomIn,
+    ];
+
+    const randomIndex = Math.floor(Math.random() * animations.length);
+    const randomAnimation = animations[randomIndex];
+
+    console.log(`Animating with ${randomAnimation}`);
+
+    randomAnimation();
+  };
+
   const handleImageTouch = () => {
+    console.log('image touched');
     setIsImageTouched(true);
     playSound();
-
+    getRandomAnimation();
     setTimeout(() => {
       setIsImageTouched(false);
     }, 150);
@@ -90,7 +106,6 @@ export default function Home() {
 
   const onHandlerStateChange = (event) => {
     if (event.nativeEvent.state === State.END) {
-      // Reset the flags for the next swipe
       setColourIndexChanged(false);
       setAnimalIndexChanged(false);
     }
@@ -108,13 +123,16 @@ export default function Home() {
         ]}
       >
         <TouchableWithoutFeedback onPress={handleImageTouch}>
-          <Image
-            source={animalArray[animalIndex]}
-            style={[
-              styles.image,
-              isImageTouched && { transform: [{ scale: 1.3 }] },
-            ]}
-          />
+          <View style={styles.imageContainer}>
+            <AnimatableImage
+              ref={animatableImageRef}
+              source={animalArray[animalIndex]}
+              style={[
+                styles.image,
+                isImageTouched && { transform: [{ scale: 1.3 }] },
+              ]}
+            />
+          </View>
         </TouchableWithoutFeedback>
       </View>
     </PanGestureHandler>
@@ -124,6 +142,10 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
