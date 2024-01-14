@@ -1,9 +1,9 @@
 export const colourWheel = [
   '#DC143C', // Crimson
-  '#FFA500', // Orange
+  '#EE9400', // Orange
   '#FFD700', // Gold
-  '#ADFF2F', // GreenYellow
-  '#87CEFA', // LightSkyBlue
+  '#3CB371', // MediumSeaGreen
+  '#1E90FF', // DodgerBlue
   '#FF69B4', // HotPink
   '#9370DB', // MediumPurple
 ];
