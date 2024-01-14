@@ -42,7 +42,6 @@ export default function Home() {
   const handleImageTouch = () => {
     setIsImageTouched(true);
 
-    // Increase the scale to make it briefly larger
     setTimeout(() => {
       setIsImageTouched(false);
     }, 150);
@@ -52,9 +51,9 @@ export default function Home() {
     const { translationX, translationY } = event.nativeEvent;
 
     if (translationX > 50 && !colourIndexChanged) {
-      cycleColourArrayIndex(1);
-    } else if (translationX < -50 && !colourIndexChanged) {
       cycleColourArrayIndex(-1);
+    } else if (translationX < -50 && !colourIndexChanged) {
+      cycleColourArrayIndex(1);
     }
 
     if (translationY > 20 && !animalIndexChanged) {
@@ -100,10 +99,6 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
