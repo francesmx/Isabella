@@ -31,18 +31,14 @@ export default function Home() {
     const { translationX, translationY } = event.nativeEvent;
 
     if (translationX > 50) {
-      // Right swipe
       cycleColourArrayIndex(1);
     } else if (translationX < -50) {
-      // Left swipe
       cycleColourArrayIndex(-1);
     }
 
     if (translationY > 20) {
-      // Up swipe
       cycleAnimalArrayIndex(1);
     } else if (translationY < -20) {
-      // Down swipe
       cycleAnimalArrayIndex(-1);
     }
   };
