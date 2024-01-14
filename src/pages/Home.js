@@ -8,6 +8,7 @@ import {
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import { colourWheel } from '../utils/ColorWheel';
 import { Audio } from 'expo-av';
+import ShakeImage from '../utils/ShakeImage';
 
 const animalArray = [
   require('../../assets/animals/bunny.png'),
@@ -80,9 +81,9 @@ export default function Home() {
       cycleColourArrayIndex(1);
     }
 
-    if (translationY > 20 && !animalIndexChanged) {
+    if (translationY > 50 && !animalIndexChanged) {
       cycleAnimalArrayIndex(1);
-    } else if (translationY < -20 && !animalIndexChanged) {
+    } else if (translationY < -50 && !animalIndexChanged) {
       cycleAnimalArrayIndex(-1);
     }
   };
