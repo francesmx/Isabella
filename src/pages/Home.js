@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import { colourWheel } from '../utils/ColorWheel';
+import { Audio } from 'expo-av';
 
 const animalArray = [
   require('../../assets/animals/bunny.png'),
@@ -25,6 +26,28 @@ export default function Home() {
 
   const [isImageTouched, setIsImageTouched] = useState(false);
 
+  const [sound, setSound] = useState();
+
+  async function playSound() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(
+      require('../../assets/sounds/boing.mp3')
+    );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
   const cycleColourArrayIndex = (increment) => {
     const nextIndex =
       (colourIndex + increment + colourWheel.length) % colourWheel.length;
@@ -41,6 +64,7 @@ export default function Home() {
 
   const handleImageTouch = () => {
     setIsImageTouched(true);
+    playSound();
 
     setTimeout(() => {
       setIsImageTouched(false);
