@@ -31,20 +31,17 @@ export default function Home() {
   const [sound, setSound] = useState();
   const animatableImageRef = useRef();
 
-  async function playSound() {
-    console.log('Loading Sound');
+  const playSound = async () => {
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/sounds/boing.mp3')
     );
     setSound(sound);
-    console.log('Playing Sound');
     await sound.playAsync();
-  }
+  };
 
   useEffect(() => {
     return sound
       ? () => {
-          console.log('Unloading Sound');
           sound.unloadAsync();
         }
       : undefined;
@@ -72,17 +69,12 @@ export default function Home() {
       animatableImageRef.current.jumpUp,
       animatableImageRef.current.zoomIn,
     ];
-
     const randomIndex = Math.floor(Math.random() * animations.length);
     const randomAnimation = animations[randomIndex];
-
-    console.log(`Animating with ${randomAnimation}`);
-
     randomAnimation();
   };
 
   const handleImageTouch = () => {
-    console.log('image touched');
     setIsImageTouched(true);
     playSound();
     getRandomAnimation();
@@ -123,25 +115,23 @@ export default function Home() {
         onGestureEvent={handleImageTouch}
         simultaneousHandlers={animatableImageRef}
       >
-        <View
-          style={[
-            styles.container,
-            { backgroundColor: colourWheel[colourIndex] },
-          ]}
-        >
-          <TouchableWithoutFeedback onPress={handleImageTouch}>
-            <View style={styles.imageContainer}>
-              <AnimatableImage
-                ref={animatableImageRef}
-                source={animalArray[animalIndex]}
-                style={[
-                  styles.image,
-                  isImageTouched && { transform: [{ scale: 1.3 }] },
-                ]}
-              />
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
+        <TouchableWithoutFeedback onPress={handleImageTouch}>
+          <View
+            style={[
+              styles.container,
+              { backgroundColor: colourWheel[colourIndex] },
+            ]}
+          >
+            <AnimatableImage
+              ref={animatableImageRef}
+              source={animalArray[animalIndex]}
+              style={[
+                styles.image,
+                isImageTouched && { transform: [{ scale: 1.3 }] },
+              ]}
+            />
+          </View>
+        </TouchableWithoutFeedback>
       </PinchGestureHandler>
     </PanGestureHandler>
   );
@@ -150,10 +140,6 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
