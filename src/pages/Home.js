@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import { colourWheel } from '../utils/ColorWheel';
 
@@ -18,6 +23,8 @@ export default function Home() {
   const [colourIndexChanged, setColourIndexChanged] = useState(false);
   const [animalIndexChanged, setAnimalIndexChanged] = useState(false);
 
+  const [isImageTouched, setIsImageTouched] = useState(false);
+
   const cycleColourArrayIndex = (increment) => {
     const nextIndex =
       (colourIndex + increment + colourWheel.length) % colourWheel.length;
@@ -30,6 +37,15 @@ export default function Home() {
       (animalIndex + increment + animalArray.length) % animalArray.length;
     setAnimalIndex(nextIndex);
     setAnimalIndexChanged(true);
+  };
+
+  const handleImageTouch = () => {
+    setIsImageTouched(true);
+
+    // Increase the scale to make it briefly larger
+    setTimeout(() => {
+      setIsImageTouched(false);
+    }, 150);
   };
 
   const onGestureEvent = (event) => {
@@ -67,7 +83,15 @@ export default function Home() {
           { backgroundColor: colourWheel[colourIndex] },
         ]}
       >
-        <Image source={animalArray[animalIndex]} />
+        <TouchableWithoutFeedback onPress={handleImageTouch}>
+          <Image
+            source={animalArray[animalIndex]}
+            style={[
+              styles.image,
+              isImageTouched && { transform: [{ scale: 1.3 }] },
+            ]}
+          />
+        </TouchableWithoutFeedback>
       </View>
     </PanGestureHandler>
   );
@@ -78,5 +102,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 200,
+    height: 250,
   },
 });
