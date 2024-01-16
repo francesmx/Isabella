@@ -81,10 +81,44 @@ const AnimatableImage = ({ source }, ref) => {
     ]).start();
   };
 
+  const jumpDown = () => {
+    Animated.sequence([
+      Animated.timing(translateYValue, {
+        toValue: 50,
+        duration: 300,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }),
+      Animated.timing(translateYValue, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
   const moveLeft = () => {
     Animated.sequence([
       Animated.timing(translateXValue, {
         toValue: -50,
+        duration: 300,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }),
+      Animated.timing(translateXValue, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
+  const moveRight = () => {
+    Animated.sequence([
+      Animated.timing(translateXValue, {
+        toValue: 50,
         duration: 300,
         easing: Easing.linear,
         useNativeDriver: false,
@@ -109,14 +143,28 @@ const AnimatableImage = ({ source }, ref) => {
     });
   };
 
+  const zoomOut = () => {
+    Animated.timing(scaleValue, {
+      toValue: 0.7,
+      duration: 300,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start(() => {
+      scaleValue.setValue(1);
+    });
+  };
+
   // Expose the animation functions to be called from the parent component
   useImperativeHandle(ref, () => ({
     shake,
     rotate,
     rotateReverse,
     jumpUp,
+    jumpDown,
     moveLeft,
+    moveRight,
     zoomIn,
+    zoomOut,
   }));
 
   // Trigger the zoomIn effect when the component mounts
