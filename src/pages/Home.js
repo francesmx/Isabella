@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import {
   PanGestureHandler,
   PinchGestureHandler,
@@ -32,16 +27,19 @@ export default function Home() {
   const animatableImageRef = useRef();
 
   const playSound = async () => {
+    console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/sounds/boing.mp3')
     );
     setSound(sound);
+    console.log('Playing Sound');
     await sound.playAsync();
   };
 
   useEffect(() => {
     return sound
       ? () => {
+          console.log('Unloading Sound');
           sound.unloadAsync();
         }
       : undefined;
@@ -66,15 +64,23 @@ export default function Home() {
       animatableImageRef.current.rotate,
       animatableImageRef.current.rotateReverse,
       animatableImageRef.current.moveLeft,
+      animatableImageRef.current.moveRight,
       animatableImageRef.current.jumpUp,
+      animatableImageRef.current.jumpDown,
       animatableImageRef.current.zoomIn,
+      animatableImageRef.current.zoomOut,
     ];
+
     const randomIndex = Math.floor(Math.random() * animations.length);
     const randomAnimation = animations[randomIndex];
+
+    console.log(`Animating with ${randomAnimation}`);
+
     randomAnimation();
   };
 
   const handleImageTouch = () => {
+    console.log('image touched');
     setIsImageTouched(true);
     playSound();
     getRandomAnimation();
@@ -115,23 +121,25 @@ export default function Home() {
         onGestureEvent={handleImageTouch}
         simultaneousHandlers={animatableImageRef}
       >
-        <TouchableWithoutFeedback onPress={handleImageTouch}>
-          <View
-            style={[
-              styles.container,
-              { backgroundColor: colourWheel[colourIndex] },
-            ]}
-          >
-            <AnimatableImage
-              ref={animatableImageRef}
-              source={animalArray[animalIndex]}
-              style={[
-                styles.image,
-                isImageTouched && { transform: [{ scale: 1.3 }] },
-              ]}
-            />
-          </View>
-        </TouchableWithoutFeedback>
+        <View
+          style={[
+            styles.container,
+            { backgroundColor: colourWheel[colourIndex] },
+          ]}
+        >
+          <TouchableWithoutFeedback onPress={handleImageTouch}>
+            <View style={styles.imageContainer}>
+              <AnimatableImage
+                ref={animatableImageRef}
+                source={animalArray[animalIndex]}
+                style={[
+                  styles.image,
+                  isImageTouched && { transform: [{ scale: 1.3 }] },
+                ]}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
       </PinchGestureHandler>
     </PanGestureHandler>
   );
