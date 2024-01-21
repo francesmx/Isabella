@@ -86,7 +86,7 @@ export default function Home() {
     getRandomAnimation();
     setTimeout(() => {
       setIsImageTouched(false);
-    }, 150);
+    }, 50);
   };
 
   const onPanGestureEvent = (event) => {
@@ -132,10 +132,7 @@ export default function Home() {
               <AnimatableImage
                 ref={animatableImageRef}
                 source={animalArray[animalIndex]}
-                style={[
-                  styles.image,
-                  isImageTouched && { transform: [{ scale: 1.3 }] },
-                ]}
+                style={styles.image}
               />
             </View>
           </TouchableWithoutFeedback>
