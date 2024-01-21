@@ -17,20 +17,27 @@ const animalArray = [
   require('../../assets/animals/giraffe.png'),
 ];
 
+const babySoundsArray = [
+  require('../../assets/sounds/laugh1.mp3'),
+  require('../../assets/sounds/laugh2.mp3'),
+  require('../../assets/sounds/awoodah.mp3'),
+];
+
 export default function Home() {
   const [colourIndex, setColourIndex] = useState(0);
   const [animalIndex, setAnimalIndex] = useState(0);
   const [colourIndexChanged, setColourIndexChanged] = useState(false);
   const [animalIndexChanged, setAnimalIndexChanged] = useState(false);
-  const [isImageTouched, setIsImageTouched] = useState(false);
   const [sound, setSound] = useState();
   const animatableImageRef = useRef();
 
   const playSound = async () => {
     console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(
-      require('../../assets/sounds/boing.mp3')
-    );
+
+    const randomIndex = Math.floor(Math.random() * babySoundsArray.length);
+    const randomSound = babySoundsArray[randomIndex];
+
+    const { sound } = await Audio.Sound.createAsync(randomSound);
     setSound(sound);
     console.log('Playing Sound');
     await sound.playAsync();
@@ -81,12 +88,8 @@ export default function Home() {
 
   const handleImageTouch = () => {
     console.log('image touched');
-    setIsImageTouched(true);
     playSound();
     getRandomAnimation();
-    setTimeout(() => {
-      setIsImageTouched(false);
-    }, 50);
   };
 
   const onPanGestureEvent = (event) => {
