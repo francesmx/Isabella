@@ -188,7 +188,7 @@ const AnimatableImage = ({ source }, ref) => {
 
   return (
     <Animated.View style={[styles.imageContainer, animatedStyle]}>
-      <Image source={source} style={styles.image} />
+      <Image source={source} />
     </Animated.View>
   );
 };
@@ -197,10 +197,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  image: {
-    width: 200,
-    height: 200,
   },
 });
 

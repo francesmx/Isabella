@@ -10,11 +10,16 @@ import { Audio } from 'expo-av';
 import AnimatableImage from '../components/AnimatableImage';
 
 const animalArray = [
-  require('../../assets/animals/bunny.png'),
-  require('../../assets/animals/tiger.png'),
-  require('../../assets/animals/frog.png'),
-  require('../../assets/animals/pig.png'),
+  require('../../assets/animals/bear.png'),
+  require('../../assets/animals/elephant.png'),
+  require('../../assets/animals/fox.png'),
   require('../../assets/animals/giraffe.png'),
+  require('../../assets/animals/hippo.png'),
+  require('../../assets/animals/lion.png'),
+  require('../../assets/animals/monkey.png'),
+  require('../../assets/animals/moose.png'),
+  require('../../assets/animals/tiger.png'),
+  require('../../assets/animals/zebra.png'),
 ];
 
 const babySoundsArray = [
@@ -135,7 +140,6 @@ export default function Home() {
               <AnimatableImage
                 ref={animatableImageRef}
                 source={animalArray[animalIndex]}
-                style={styles.image}
               />
             </View>
           </TouchableWithoutFeedback>
@@ -150,9 +154,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  image: {
-    width: 200,
-    height: 250,
   },
 });
