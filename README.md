@@ -14,11 +14,6 @@ npx expo start
 
 Open in iOS simulator / Android emulator, or scan the QR code to open in Expo Go.
 
-## Version History
-
-- 0.1
-  - Initial Release
-
 ## Acknowledgments
 
 Images purchased from Shutterstock Ireland Ltd.
